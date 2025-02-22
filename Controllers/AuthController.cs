@@ -38,7 +38,7 @@ public class AuthController : ControllerBase
         // Generate JWT token
         try
         {
-            var token = GenerateJwtToken(model.Username);
+            var token = GenerateJwtToken(model.Username, user);
             return Ok(new { Token = token });
         }
         catch (Exception ex)
@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string GenerateJwtToken(string username)
+    private string GenerateJwtToken(string username, User user)
     {
         // Get the JWT key from configuration
         var key = _configuration["Jwt:Key"];
@@ -62,6 +62,7 @@ public class AuthController : ControllerBase
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim("userId", user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

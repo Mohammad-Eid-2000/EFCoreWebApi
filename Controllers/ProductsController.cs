@@ -1,4 +1,5 @@
-﻿using EFCoreWebApi.Models;
+﻿using EFCoreWebApi.DTO;
+using EFCoreWebApi.Models;
 using EFCoreWebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,14 +72,14 @@ namespace EFCoreWebApi.Controllers
             }
         }
         [HttpPost("search")]
-        public async Task<ActionResult<IEnumerable<Product>>> SearchProduct([FromBody] string searchText)
+        public async Task<ActionResult<IEnumerable<Product>>> SearchProduct([FromBody] searchDTO search)
         {
-            if (searchText == null || string.IsNullOrWhiteSpace(searchText))
+            if (search.searchText == null || string.IsNullOrWhiteSpace(search.searchText))
             {
                 return BadRequest(new { message = "Search text cannot be empty." });
             }
 
-            var products = await _productRepository.Search(searchText);
+            var products = await _productRepository.Search(search.propertyName, search.searchText);
 
             if (products == null || !products.Any())
             {

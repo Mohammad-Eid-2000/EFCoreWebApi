@@ -48,12 +48,25 @@ namespace EFCoreWebApi.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Product>> Search(string searchText)
+        public async Task<IEnumerable<Product>> Search(string propertyName, string searchText)
         {
-            return await _context.Products
-                .Where(x => x.Name == searchText) // Correct filtering
-                .ToListAsync(); // Fetch the results as a list
+            IQueryable<Product> query = _context.Products;
+
+            switch (propertyName)
+            {
+                case nameof(Product.Name):
+                    query = query.Where(x => x.Name == searchText);
+                    break;
+                case nameof(Product.Price):
+                    query = query.Where(x => x.Price == decimal.Parse(searchText));
+                    break;
+                default:
+                    throw new ArgumentException($"Property '{propertyName}' is not supported for searching.");
+            }
+            var result = await query.ToListAsync();
+            return result;
         }
+
 
         public Task<Product> SearchSingle(string searchText)
         {

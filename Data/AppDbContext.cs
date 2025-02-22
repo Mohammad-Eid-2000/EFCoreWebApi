@@ -12,6 +12,7 @@ namespace EFCoreWebApi.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         // Remove the OnConfiguring method
         // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

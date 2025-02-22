@@ -11,7 +11,7 @@ namespace EFCoreWebApi.Repositories
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task <Boolean> DeleteAsync(int id);
-        Task<IEnumerable<T>> Search(string searchText);
+        Task<IEnumerable<T>> Search(string propertyName , string searchText);
         Task<T> SearchSingle(string searchText);
 
     }

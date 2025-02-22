@@ -56,11 +56,26 @@ namespace EFCoreWebApi.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<User>> Search(string searchText)
+        public async Task<IEnumerable<User>> Search(string propertyName, string searchText)
         {
-            return await _context.Users
-                .Where(x => x.Name == searchText) // Correct filtering
-                .ToListAsync(); // Fetch the results as a list
+            IQueryable<User> query = _context.Users;
+
+            switch (propertyName)
+            {
+                case nameof(User.Name):
+                    query = query.Where(x => x.Name == searchText);
+                    break;
+                case nameof(User.Email):
+                    query = query.Where(x => x.Email == searchText);
+                    break;
+                case nameof(User.UserName):
+                    query = query.Where(x => x.UserName == searchText);
+                    break;
+                default:
+                    throw new ArgumentException($"Property '{propertyName}' is not supported for searching.");
+            }
+            var result = await query.ToListAsync();
+            return result;
         }
 
     }

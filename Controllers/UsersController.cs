@@ -1,4 +1,5 @@
-﻿using EFCoreWebApi.Models;
+﻿using EFCoreWebApi.DTO;
+using EFCoreWebApi.Models;
 using EFCoreWebApi.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,36 @@ namespace EFCoreWebApi.Controllers
             {
                 return NotFound(new { success = false, message = "User not found or could not be deleted." });
             }
+        }
+        [HttpPost("checkUniqueUserName")]
+        public async Task<ActionResult<bool>> SearchProduct([FromBody] searchDTO search)
+        {
+
+            var user = await _userRepository.SearchSingle(search.searchText);
+
+            if (user == null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        [HttpPost("search")]
+        public async Task<ActionResult<IEnumerable<User>>> SearchNote([FromBody] searchDTO search)
+        {
+            if (search.searchText == null || string.IsNullOrWhiteSpace(search.searchText))
+            {
+                return BadRequest(new { message = "Search text cannot be empty." });
+            }
+
+            var Users = await _userRepository.Search(search.propertyName, search.searchText);
+
+            if (Users == null || !Users.Any())
+            {
+                return NotFound(new { message = "No Users found." });
+            }
+
+            return Ok(Users);
         }
     }
     }

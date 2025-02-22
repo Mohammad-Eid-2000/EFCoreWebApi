@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using EFCoreWebApi.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -35,19 +36,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 // Register DbContext with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=app.db"));
+    options.UseSqlServer("Server=MOHAMMADEID\\SQLEXPRESS;Database=eid;Integrated Security=True;TrustServerCertificate=True;"));
 
 // Register Repository
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
-
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
 // Add controllers
 builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
