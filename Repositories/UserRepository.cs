@@ -18,14 +18,14 @@ namespace EFCoreWebApi.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
-        public async Task<User> SearchSingle(string userName)
+        public async Task<User?> SearchSingle(string userName)
         {
             return await _context.Users
-                                 .Where(u => u.UserName == userName)
+                                 .Where(u => u.UserName == userName || u.Email == userName)
                                  .SingleOrDefaultAsync();
         }
 

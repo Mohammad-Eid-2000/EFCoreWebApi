@@ -36,7 +36,7 @@ namespace EFCoreWebApi.Repositories
             return await _context.Notes.ToListAsync();
         }
 
-        public async Task<Note> GetByIdAsync(int id)
+        public async Task<Note?> GetByIdAsync(int id)
         {
             return await _context.Notes.FindAsync(id);
 
@@ -66,7 +66,7 @@ namespace EFCoreWebApi.Repositories
             return result;
         }
 
-        public Task<Note> SearchSingle(string searchText)
+        public Task<Note?> SearchSingle(string searchText)
         {
             throw new NotImplementedException();
         }

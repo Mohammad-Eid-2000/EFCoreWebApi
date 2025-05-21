@@ -72,7 +72,7 @@ namespace EFCoreWebApi.Controllers
         public async Task<ActionResult<bool>> SearchProduct([FromBody] searchDTO search)
         {
 
-            var user = await _userRepository.SearchSingle(search.searchText);
+            var user = await _userRepository.SearchSingle(search.SearchText);
 
             if (user == null)
             {
@@ -84,12 +84,12 @@ namespace EFCoreWebApi.Controllers
         [HttpPost("search")]
         public async Task<ActionResult<IEnumerable<User>>> SearchNote([FromBody] searchDTO search)
         {
-            if (search.searchText == null || string.IsNullOrWhiteSpace(search.searchText))
+            if (search.SearchText == null || string.IsNullOrWhiteSpace(search.SearchText))
             {
                 return BadRequest(new { message = "Search text cannot be empty." });
             }
 
-            var Users = await _userRepository.Search(search.propertyName, search.searchText);
+            var Users = await _userRepository.Search(search.PropertyName, search.SearchText);
 
             if (Users == null || !Users.Any())
             {

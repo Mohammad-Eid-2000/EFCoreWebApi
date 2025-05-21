@@ -2,7 +2,7 @@
 {
     public class searchDTO
     {
-        public string searchText { get; set; }
-        public string propertyName { get; set; }
+        public string SearchText { get; set; } = "";
+        public string PropertyName { get; set; } = "";
     }
 }

@@ -18,7 +18,7 @@ namespace EFCoreWebApi.Repositories
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Products.FindAsync(id);
         }
@@ -68,7 +68,7 @@ namespace EFCoreWebApi.Repositories
         }
 
 
-        public Task<Product> SearchSingle(string searchText)
+        public Task<Product?> SearchSingle(string searchText)
         {
             throw new NotImplementedException();
         }
